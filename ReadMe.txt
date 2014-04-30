@@ -4,7 +4,7 @@
 1. Que fait ce module ?
 -----------------------
 Ce module permet de : 
- * choisir un layout par défaut, un layout pour les erreurs et autant de layouts particuliers que nécessaire, 
+ * choisir un layout par défaut, un layout pour les erreurs (404 et exceptions) et autant de layouts particuliers que nécessaire 
    appliqués à des modules ou à des contrôleurs.
  * passer des paramètres aux layouts à partir d'un fichier de configuration.
 
@@ -215,5 +215,10 @@ EOD
           'attrs' => array() // peut contenir par exemple les clés 'conditional', 'id', 'noescape' ...
    )
    Et le tableau 'js-script' passe directementd des scripts sous forme de chaîne de caractères. Ce dernier tableau est optionnel.
+
+5. Credits et License
+---------------------
+Author : Alain Pomirol <pomirol@gmail.com>
+Compagny : Dafap informatique <dafap@free.fr>
 
 
