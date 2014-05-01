@@ -1,0 +1,26 @@
+{
+    "name": "dafap/dafap-layout",
+    "description": "A ZF2 module for managing layouts.",
+    "type": "library",
+    "keywords": [
+        "php", "layout", "dafap", "zf2"
+    ],
+    "homepage": "https://github.com/dafap/DafapLayout",
+    "authors": [
+        {
+            "name": "Alain Pomirol",
+            "email": "pomirol@gmail.com"
+        }
+    ],
+    "require": {
+        "zendframework/zendframework": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "DafapLayout\\": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
