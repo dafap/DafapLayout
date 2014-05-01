@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Dafaplayout : This module allows to manage layouts in a project. We can define a particular layout for errors (404 and exceptions), an individual layout for each module or each controller, a default layout for all modules or conrollers for which we do not set specific layout. Layouts accept parameters from a configuration file, specifying eg strings, css files, script files, images ..." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Dafaplayout</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/dafap/DafapLayout">View on GitHub</a>
+
+          <h1 id="project_title">Dafaplayout</h1>
+          <h2 id="project_tagline">This module allows to manage layouts in a project. We can define a particular layout for errors (404 and exceptions), an individual layout for each module or each controller, a default layout for all modules or conrollers for which we do not set specific layout. Layouts accept parameters from a configuration file, specifying eg strings, css files, script files, images ...</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/dafap/DafapLayout/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/dafap/DafapLayout/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="dafaplayout" class="anchor" href="#dafaplayout"><span class="octicon octicon-link"></span></a>DafapLayout</h1>
+
+<hr><h2>
+<a name="1-que-fait-ce-module-" class="anchor" href="#1-que-fait-ce-module-"><span class="octicon octicon-link"></span></a>1. Que fait ce module ?</h2>
+
+<hr><p>Ce module permet de : </p>
+
+<ul>
+<li>choisir un layout par défaut, un layout pour les erreurs (404 et exceptions) et autant de layouts particuliers que nécessaire appliqués à des modules ou à des contrôleurs.</li>
+<li>passer des paramètres aux layouts à partir d'un fichier de configuration.</li>
+</ul><p>Il offre aussi trois aides de vue : </p>
+
+<ul>
+<li>getParameter renvoie un paramètre de la configuration, ou null s'il n'est pas présent. </li>
+<li>getHeadLinks permet de mettre en place toutes les balises <code>&lt;link&gt;</code> (css, favicon, etc.) dont les paramètres sont passés par la configuration.</li>
+<li>getHeadScripts permet de mettre en place toutes les balises <code>&lt;script&gt;</code> qu'elles soient définies par des fichiers ou par des chaines contenant les scripts.</li>
+</ul><h1>
+<a name="2-comment-configurer-le-module-" class="anchor" href="#2-comment-configurer-le-module-"><span class="octicon octicon-link"></span></a>2. Comment configurer le module ?</h1>
+
+<hr><p>Pour configurer le module, il faut :</p>
+
+<ul>
+<li>déclarer le module dans le fichier config/application.config.php</li>
+<li>copier le fichier DafapLayout/config/dafap-layout.global.dist.php dans le dossier config/autoload sous le 
+nom de dafap-layout.global.php de votre application et l'adapter à votre besoin en respectant la structure 
+indiquée plus loin.</li>
+</ul><h2>
+<a name="21-comment-d%C3%A9clarer-ce-module-" class="anchor" href="#21-comment-d%C3%A9clarer-ce-module-"><span class="octicon octicon-link"></span></a>2.1 Comment déclarer ce module ?</h2>
+
+<hr><p>La déclaration du module se fait en deux étapes :</p>
+
+<ul>
+<li>Ajouter le nom du module dans le tableau 'modules' du fichier config/application.config.php de votre application. 
+  Etant donné que ce module est totalement indépendant, peu importe l'ordre dans ce module dans la liste.</li>
+<li>S'assurer que les chemins indiqués dans la tableau 'module_paths' permettent d'accéder au module. 
+  En particulier, si ce module est monté dans vendor sans l'aide de composer.phar[1], il faut rajouter son chemin dans le tableau 'module_paths'.</li>
+</ul><h2>
+<a name="22-structure-du-fichier-de-configuration" class="anchor" href="#22-structure-du-fichier-de-configuration"><span class="octicon octicon-link"></span></a>2.2 Structure du fichier de configuration</h2>
+
+<hr><p>Le fichier config/autoload/dafap-layout.global.php contient les paramètres nécessaires à votre situation.</p>
+
+<ul>
+<li>un layout particulier pour les erreurs 404 et les exceptions</li>
+<li>un layout général qui s'appliquera par défaut à tout module ou tout contrôleur pour lesquels un layout particulier n'a pas été configuré</li>
+<li>autant de layouts que nécessaire pour les modules</li>
+<li>autant de layouts que nécessaire pour les contrôleurs</li>
+</ul><h3>
+<a name="221-le-layout-utilis%C3%A9-pour-les-erreurs-404-et-les-exceptions" class="anchor" href="#221-le-layout-utilis%C3%A9-pour-les-erreurs-404-et-les-exceptions"><span class="octicon octicon-link"></span></a>2.2.1 Le layout utilisé pour les erreurs 404 et les exceptions</h3>
+
+<p>a) 'layout/error' doit être déclaré dans le 'view_manager' parmi les 'template_map' de l'application[2]. 
+Cet alias pointe sur le fichier layout qui sera utilisé pour les erreurs 404 et les exceptions. 
+Cet alias ne doit pas être modifié[3].</p>
+
+<p>b) Si ce layout utilise des paramètres de configuration (fichiers css, favicon, images, nom d'organisation ...), il doit être déclaré dans le tableau 'parameter' de 'layout_manager' (voir la structure plus loin).</p>
+
+<h3>
+<a name="222-le-layout-%C3%A0-utiliser-par-d%C3%A9faut" class="anchor" href="#222-le-layout-%C3%A0-utiliser-par-d%C3%A9faut"><span class="octicon octicon-link"></span></a>2.2.2 Le layout à utiliser par défaut</h3>
+
+<p>a) 'layout/defaults' doit être déclaré dans le 'view_manager' parmi les 'template_map' de l'application[2]. 
+Cet alias pointe sur le fichier layout qui sera utilisé par défaut, pour tous les modules ou contrôleurs pour lesquels un template particulier n'a pas été déclaré.</p>
+
+<p>b) Il doit ensuite être déclaré dans le tableau 'layout_map' de 'layout_manager' de la façon impérative suivante : 
+            <code>'defaults' =&gt; 'layout/defaults'</code></p>
+
+<p>c) Enfin, si ce layout utilise des paramètres de configuration (fichiers css, favicon, images, nom d'organisation ...), il doit être déclaré dans le tableau 'parameter' de 'layout_manager' (voir la structure plus loin).</p>
+
+<h3>
+<a name="223-le-layout-%C3%A0-utiliser-pour-un-module-particulier" class="anchor" href="#223-le-layout-%C3%A0-utiliser-pour-un-module-particulier"><span class="octicon octicon-link"></span></a>2.2.3 Le layout à utiliser pour un module particulier</h3>
+
+<p>Envisageons que tout un module de namespace MonModule doive utiliser un layout particulier enregistré dans le fichier 'MonModule\view\layout\layout.phtml'.</p>
+
+<p>a) Il doit être déclaré dans le 'view_manager' parmi les 'template_map' de l’application[2]. 
+Par cohérence, il est souhaitable d’utiliser le namespace du module dans la clé. 
+Pour notre exemple, on peut utiliser : 'layout/monModule'[2].</p>
+
+<p>b) Il doit être déclaré dans le tableau 'layout_map' de 'layout_manager' de la façon suivante : 
+            <code>'namespace' =&gt; 'clé du fichier layout'</code><br>
+Pour notre exemple, on doit déclarer, 'MonModule' =&gt; 'layout/monModule'.</p>
+
+<p>c) Si ce layout utilise des paramètres de configuration  (fichiers css, favicon, images, nom d'organisation ...), il doit être déclaré dans le tableau 'parameter' de 'layout_manager' (voir la structure plus loin).</p>
+
+<h3>
+<a name="224-le-layout-%C3%A0-utiliser-pour-un-contr%C3%B4leur-particulier" class="anchor" href="#224-le-layout-%C3%A0-utiliser-pour-un-contr%C3%B4leur-particulier"><span class="octicon octicon-link"></span></a>2.2.4 Le layout à utiliser pour un contrôleur particulier</h3>
+
+<p>Envisageons qu'un contrôleur dont la classe est MonModule\Controller\SpecialController doive utiliser un layout particulier enregistré dans le fichier 'MonModule\view\layout\special.phtml'.</p>
+
+<p>a) Il doit être déclaré dans le 'view_manager' parmi les 'template_map' de l’application[2]. 
+Par cohérence, il est souhaitable d’utiliser le nom du controller dans la clé. 
+Pour notre exemple, on peut utiliser : 'layout/specialController'[2].</p>
+
+<p>b) Il doit être déclaré dans le tableau 'layout_map' de 'layout_manager' de la façon suivante :
+           <code>'nom de la classe' =&gt; 'clé du fichier layout'</code>
+Pour notre exemple, on doit déclarer : 'MonModule\Controller\SpecialController' =&gt; 'layout/specialController').
+<em>Attention à la case des caractères pour le nom de la classe. Se référer à la note [2] pour l'alias du layout.</em> </p>
+
+<p>c) Si ce layout utilise des paramètres de configuration  (fichiers css, favicon, images, nom d'organisation ...), il doit être déclaré dans le tableau 'parameter' de 'layout_manager' (voir la structure ci-dessous).</p>
+
+<p>Notes :
+[1] Si on utilise composer.phar, il sera rajouté automatiquement dans les fichiers</p>
+
+<p>[2] Dans le tableau 'template_map' de 'view_manager', les clés sont de la forme 'layout/alias' où alias commence toujours par une minuscule.</p>
+
+<p>[3] Utilisé dans la classe LayoutErrorListener</p>
+
+<h1>
+<a name="3-structure-des-param%C3%A8tres-cl%C3%A9-parameter-de-layout_manager" class="anchor" href="#3-structure-des-param%C3%A8tres-cl%C3%A9-parameter-de-layout_manager"><span class="octicon octicon-link"></span></a>3. Structure des paramètres (clé 'parameter' de 'layout_manager')</h1>
+
+<hr><h2>
+<a name="31-structure-g%C3%A9n%C3%A9rale" class="anchor" href="#31-structure-g%C3%A9n%C3%A9rale"><span class="octicon octicon-link"></span></a>3.1 Structure générale</h2>
+
+<hr><p>La structure générale du 'layout_manager' est fixée dans DafapLayout/config/module.config.php et ne doit pas être modifiée.</p>
+
+<pre><code>`'layout_manager' =&gt; array(`
+    `'layout_map' =&gt; array(),`
+    `'parameter' =&gt; array()`
+`),`
+</code></pre>
+
+<p>Le tableau 'layout_map' doit dresser la liste des associations entre les namespaces des modules ou les classes des contrôleurs et les alias des layouts.
+    Exemple :</p>
+
+<pre><code>    'layout_map' =&gt; array(
+        'defaults' =&gt; 'layout/defaults',
+        'MonModule' =&gt; 'layout/monModule',
+        'MonModule\Controller\SpecialController' =&gt; 'layout/specialController'
+    ),
+</code></pre>
+
+<p>A noter qu'on ne déclare pas le 'layout/error' dans cette liste.    </p>
+
+<p>Le tableau 'parameter' contient une description des paramètres à passer aux différents layouts de la façon suivante :</p>
+
+<pre><code>    'parameter' =&gt; array(
+        'layout/error' =&gt; array(),
+        'layout/defaults' =&gt; array(),
+        'layout/monModule =&gt; array(),
+        'layout/specialController =&gt; array(),
+    ),
+</code></pre>
+
+<p>C'est le tableau correspondant au layout qui sera passé au layout dans sa propriété <code>$this-&gt;parameter</code>. On doit donc y déclarer tout ce que le layout doit connaitre.</p>
+
+<h2>
+<a name="32-exemple-de-configuration-pour-un-layout" class="anchor" href="#32-exemple-de-configuration-pour-un-layout"><span class="octicon octicon-link"></span></a>3.2 Exemple de configuration pour un layout</h2>
+
+<pre><code>'layout_manager' =&gt; array(
+    'layout_map' =&gt; array(`
+        'defaults' =&gt; 'layout/defaults',
+        'MonModule' =&gt; 'layout/monModule',
+        'MonModule\Controller\SpecialController' =&gt; 'layout/specialController'
+    ),
+    'parameter' =&gt; array(
+        'layout/error' =&gt; array(
+            'favicon' =&gt; '/img/favicon.ico'
+            'css' =&gt; array(
+                '/css/style.css',
+                '/css/nav.css',
+                array(
+                    'href' =&gt; '/css/nav-ie7.css',
+                    'media' =&gt; 'screen',
+                    'conditionalStylesheet' =&gt; 'lt IE7',
+                    'extras' =&gt; array('id' =&gt; 'dafap')
+                )
+            )
+        ),
+        'layout/defaults' =&gt; array(...),
+        'layout/monModule =&gt; array(
+            ...
+            'js-file' =&gt; array(
+                '/js/bootstrap.min.js',
+                '/js/jquery.min.js',
+                array(
+                    'src' =&gt; '/js/respond.min.js',
+                    'type' =&gt; 'text/javascript',
+                    'attrs' =&gt; array(
+                        'conditional' =&gt; 'lt IE 9'
+                    )
+                ),
+                array(
+                    'src' =&gt; '/js/html5shiv.js',
+                    'type' =&gt; 'text/javascript',
+                    'attrs' =&gt; array(
+                        'conditional' =&gt; 'lt IE 9'
+                    )
+                )
+            ),
+            'js-script' =&gt; array(&lt;&lt;&lt;EOD
+function pageRetour(controller, action) {
+    window.location.href = '" . $base . "index.php/' + controller + '/' + action;
+}
+EOD
+            )
+            ...
+        ),
+        'layout/specialController =&gt; array(...),
+    ),
+)
+</code></pre>
+
+<p>On peut définir tous les paramètres qu'on veut, sans exception.</p>
+
+<h1>
+<a name="4-mode-demploi-des-aides-de-vue" class="anchor" href="#4-mode-demploi-des-aides-de-vue"><span class="octicon octicon-link"></span></a>4. Mode d'emploi des aides de vue</h1>
+
+<hr><h2>
+<a name="41-utilisation-de-getparameter" class="anchor" href="#41-utilisation-de-getparameter"><span class="octicon octicon-link"></span></a>4.1 Utilisation de getParameter</h2>
+
+<hr><p>Cette aide de vue prend 2 paramètres : </p>
+
+<pre><code> $this-&gt;getParameter($needle, $haystack)
+ où $needle est la clé recherchée dans le tableau $haystack
+</code></pre>
+
+<p>Elle renvoie la valeur associée à cette clé ou null si la clé est absente.</p>
+
+<h2>
+<a name="42-utilisation-de-getheadlinks" class="anchor" href="#42-utilisation-de-getheadlinks"><span class="octicon octicon-link"></span></a>4.2 Utilisation de getHeadLinks</h2>
+
+<hr><p>Cette aide de vue permet de mettre en place le favicon et les fichiers css à charger dans la page.
+   En supposant que dans le tableau 'parameter' de 'layout_manager' on ait défini pour notre layout les clés favicon et css comme exposé pour le layout/error de la section 3.2, on écrira dans le code du layout :</p>
+
+<pre><code>&lt;?php
+     echo $this-&gt;getHeadLinks($this-&gt;basePath(), $this-&gt;getParameter('favicon', $this-&gt;parameter), $this-&gt;getParameter('css', $this-&gt;parameter));
+?&gt;
+</code></pre>
+
+<p>A noter que le tableau 'css' est constitué des url des fichiers css (url de ces fichier à partir de index.php) et/ou de tableaux structurés </p>
+
+<pre><code>array('href' =&gt; url du fichier,
+     'media' =&gt; nom du media auquel s'applique la css,
+     'conditionalStylesheet' =&gt; chaine exprimant la condition,
+     'extras' =&gt; tout ce qu'on veut rajouter dans la balise &lt;link&gt; comme un 'id' par exemple
+)
+
+* s'il n'y a pas de condition, on associe la valeur true
+* s'il n'y a pas d'extras, on associe un tableau vide array()
+</code></pre>
+
+<h2>
+<a name="43-utilisation-de-getheadscripts" class="anchor" href="#43-utilisation-de-getheadscripts"><span class="octicon octicon-link"></span></a>4.3 Utilisation de getHeadScripts</h2>
+
+<hr><p>Cette aide de vue permet de mettre en place les scripts dans le </p> de notre page.
+   En supposant que dans le tableau 'parameter' de 'layout_manager' on ait défini pour notre layout la clé 'js-file' et la clé 'js-script'
+   comme pour layout/monModule de l'exemple 3.2, on écrira dans le code du layout :
+
+<pre><code> &lt;?php
+     echo $this-&gt;getHeadScripts($this-&gt;basePath(), $this-&gt;getParameter('js-file', $this-&gt;parameter), $this-&gt;getParameter('js-script', $this-&gt;parameter));
+ ?&gt;
+</code></pre>
+
+<p>A noter que le tableau 'js-file' est constitué des url des  fichiers de scripts (relatives à index.php) et/ou de tableaux structurés</p>
+
+<pre><code>array( 'src' =&gt; url du fichier,
+      'type' =&gt; 'text/javascript', // ou 'text/x-jquery-tmpl' ou autre si nécessaire ...
+      'attrs' =&gt; array() // peut contenir par exemple les clés 'conditional', 'id', 'noescape' ...
+)
+</code></pre>
+
+<p>Et le tableau 'js-script' passe directementd des scripts sous forme de chaîne de caractères. Ce dernier tableau est optionnel.</p>
+
+<h1>
+<a name="5-credits-et-license" class="anchor" href="#5-credits-et-license"><span class="octicon octicon-link"></span></a>5. Credits et License</h1>
+
+<hr><p>Author : Alain Pomirol <a href="mailto:pomirol@gmail.com">pomirol@gmail.com</a>
+Compagny : Dafap informatique <a href="mailto:dafap@free.fr">dafap@free.fr</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Dafaplayout maintained by <a href="https://github.com/dafap">dafap</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
