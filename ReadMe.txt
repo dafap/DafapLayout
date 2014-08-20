@@ -191,7 +191,7 @@ EOD
       echo $this->getHeadLinks($this->basePath(), $this->getParameter('favicon', $this->parameter), $this->getParameter('css', $this->parameter));
    ?>
    
-   A noter que le tableau 'css' est constitué des url des fichiers css (url de ces fichier à partir de index.php) et/ou de tableaux structurés 
+   A noter que le tableau 'css' est constitué des url des fichiers css (url absolues commençant par // ou url relatives à index.php) et/ou de tableaux structurés 
    array('href' => url du fichier,
          'media' => nom du media auquel s'applique la css,
          'conditionalStylesheet' => chaine exprimant la condition,
@@ -209,7 +209,7 @@ EOD
       echo $this->getHeadScripts($this->basePath(), $this->getParameter('js-file', $this->parameter), $this->getParameter('js-script', $this->parameter));
    ?>
    
-   A noter que le tableau 'js-file' est constitué des url des  fichiers de scripts (relatives à index.php) et/ou de tableaux structurés
+   A noter que le tableau 'js-file' est constitué des url des  fichiers de scripts (absolues commençant par // ou relatives à index.php) et/ou de tableaux structurés
    array( 'src' => url du fichier,
           'type' => 'text/javascript', // ou 'text/x-jquery-tmpl' ou autre si nécessaire ...
           'attrs' => array() // peut contenir par exemple les clés 'conditional', 'id', 'noescape' ...
