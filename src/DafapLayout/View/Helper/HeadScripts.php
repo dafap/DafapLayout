@@ -62,9 +62,19 @@ class HeadScripts extends AbstractHelper
         }
     }
 
+    /**
+     * Si $file commence par 2 / (//) alors on ne concatène pas car c'est une adresse absolue (url)
+     *
+     * @param string $base_path            
+     * @param string $file            
+     * @return string
+     */
     private function concatPath($base_path, $file = null)
     {
         if (! is_null($file)) {
+            if (substr($file, 0, 2) == '//') {
+                return $file;
+            }
             $file = '/' . ltrim($file, '/');
         }
         $base_path = rtrim(str_replace('\\', '/', $base_path), '/');
